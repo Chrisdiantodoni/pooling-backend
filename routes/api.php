@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\RejectController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +16,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+// Route::middleware('auth:sanctum')->get('/v1/user', function (Request $request) {
+//     return $request->user();
+// });
+Route::prefix('v1')->group(function () {
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::get('/user', [AuthController::class, 'profile']);
+        Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+        Route::controller(RejectController::class)->group(function () {
+            Route::post('/store-reject', 'storeReject');
+            Route::get('/reject/{id}', 'show');
+            Route::get('/reject', 'index');
+        });
+    });
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/login', [AuthController::class, 'login'])->name('login');
 });
