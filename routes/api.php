@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\MotorcycleController;
 use App\Http\Controllers\Api\RejectController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -28,6 +29,16 @@ Route::prefix('v1')->group(function () {
             Route::post('/store-reject', 'storeReject');
             Route::get('/reject/{id}', 'show');
             Route::get('/reject', 'index');
+            Route::put('/reject/{id}', 'update');
+            Route::delete('/reject/{id}', 'destroy');
+        });
+
+        Route::controller(MotorcycleController::class)->group(function () {
+            Route::post('/motorcycle', 'store');
+            Route::get('/motorcycle', 'index');
+            Route::put('/motorcycle/{id}', 'update');
+            Route::delete('/motorcycle/{id}', 'destroy');
+            Route::get('/motorcycle/{id}', 'show');
         });
     });
     Route::post('/register', [AuthController::class, 'register']);

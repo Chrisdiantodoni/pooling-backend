@@ -59,7 +59,7 @@ class AuthController extends Controller
         } catch (ValidationException $e) {
             return ApiResponse::error($e->validator->errors(), 422, 'Validation failed');
         } catch (\Exception $e) {
-            return ApiResponse::error(null, 401, 'Login Failed');
+            return ApiResponse::error($e, 401, 'Login Failed');
         }
     }
 

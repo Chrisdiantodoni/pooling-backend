@@ -3,8 +3,10 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
-class StorepromotionRequest extends FormRequest
+class CreateRejectRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,7 +25,12 @@ class StorepromotionRequest extends FormRequest
     {
         return [
             'reason' => 'required',
-            'abbreviation' => 'required'
+            'abbreviation' => 'required',
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response(["errors" => $validator->getMessageBag()], 400));
     }
 }

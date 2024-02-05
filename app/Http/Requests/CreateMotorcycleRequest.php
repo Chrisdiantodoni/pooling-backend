@@ -2,18 +2,18 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class RejectResource extends FormRequest
+class CreateMotorcycleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,13 +24,16 @@ class RejectResource extends FormRequest
     public function rules(): array
     {
         return [
-            'reason' => 'required',
-            'abbreviation' => 'required',
+            'type' => 'required',
+            'color' => 'required',
+            'otr' => 'required',
+            'user_id' => 'required',
+            'area_id' => 'required',
         ];
     }
 
     protected function failedValidation(Validator $validator)
     {
-        throw new HttpResponseException(response(["errors" => $validator->getMessageBag()], 422));
+        throw new HttpResponseException(response(["errors" => $validator->getMessageBag()], 400));
     }
 }
