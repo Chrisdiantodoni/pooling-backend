@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('rejects', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('reject_uuid')->primary();
             $table->string('reason');
             $table->string('abbreviation');
             $table->boolean('status')->default(true);

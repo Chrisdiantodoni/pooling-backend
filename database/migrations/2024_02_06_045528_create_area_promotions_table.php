@@ -11,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('motorcycles', function (Blueprint $table) {
-            $table->uuid('motorcycle_uuid')->primary();
-            $table->string('type');
-            $table->string('color');
-            $table->bigInteger('otr');
-            $table->foreignUuid('user_uuid');
+        Schema::create('area_promotions', function (Blueprint $table) {
+            $table->foreignUuid('promotion_uuid');
             $table->foreignUuid('area_uuid');
             $table->timestamps();
+
+            $table->foreign('promotion_uuid')->references('promotion_uuid')->on('promotions')->onDelete('cascade');
+            $table->foreign('area_uuid')->references('area_uuid')->on('areas')->onDelete('cascade');
         });
     }
 
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('motorcycles');
+        Schema::dropIfExists('area_promotions');
     }
 };

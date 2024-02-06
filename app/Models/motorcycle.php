@@ -2,14 +2,17 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Motorcycle extends Model
 {
-    use HasFactory;
+    use HasFactory, HasUuids;
 
     protected $guarded = [];
+    protected $primaryKey = 'motorcycle_uuid';
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -22,6 +25,6 @@ class Motorcycle extends Model
 
     public function dealers()
     {
-        return $this->belongsToMany(Dealer::class, 'dealer_motorcycles', 'motorcycle_id', 'dealer_code');
+        return $this->belongsToMany(Dealer::class, 'dealer_motorcycles', 'motorcycle_uuid', 'dealer_code');
     }
 }

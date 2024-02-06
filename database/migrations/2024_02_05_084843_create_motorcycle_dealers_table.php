@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('dealer_motorcycles', function (Blueprint $table) {
-            $table->unsignedBigInteger('motorcycle_id');
+            $table->foreignUuid('motorcycle_uuid');
             $table->string('dealer_code');
             $table->timestamps();
-            $table->foreign('motorcycle_id')->references('id')->on('motorcycles')->onDelete('cascade');
+            $table->foreign('motorcycle_uuid')->references('motorcycle_uuid')->on('motorcycles')->onDelete('cascade');
             $table->foreign('dealer_code')->references('dealer_code')->on('dealers')->onDelete('cascade');
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('motorcycle_dealers');
+        Schema::dropIfExists('dealer_motorcycles');
     }
 };

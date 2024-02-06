@@ -3,10 +3,10 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Contracts\Validation\Validator;
 
-class UpdateRejectRequest extends FormRequest
+class CreatePromotionRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,11 +24,14 @@ class UpdateRejectRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'reason' => 'required',
-            'abbreviation' => 'required',
-            'status' => 'required',
+            'title' => 'required',
+            'promo_code' => 'required',
+            'promo_start' => 'required|date',
+            'area_uuids' => 'required|array',
+            'image' => 'image:jpg,bmp,png,jpeg'
         ];
     }
+
     protected function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(response(["errors" => $validator->getMessageBag()], 400));

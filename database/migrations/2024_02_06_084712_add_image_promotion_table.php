@@ -11,11 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tenors', function (Blueprint $table) {
-            $table->uuid('tenor_uuid')->primary();
-            $table->integer('months');
-            $table->boolean('status')->default(true);
-            $table->timestamps();
+        Schema::table('promotions', function (Blueprint $table) {
+            $table->string('image')->nullable();
         });
     }
 
@@ -24,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tenures');
+        Schema::table('promotions', function (Blueprint $table) {
+            //
+        });
     }
 };

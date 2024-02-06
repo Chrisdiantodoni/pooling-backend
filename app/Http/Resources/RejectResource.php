@@ -15,9 +15,9 @@ class RejectResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
             'reason' => $this->reason,
             'abbreviation' => $this->abbreviation,
+            "status" => $this->status,
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
         ];
     }

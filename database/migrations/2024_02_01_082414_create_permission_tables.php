@@ -25,7 +25,7 @@ return new class extends Migration
         }
 
         Schema::create($tableNames['permissions'], function (Blueprint $table) {
-            $table->bigIncrements('id'); // permission id
+            $table->uuid('id')->primary(); // permission id
             $table->string('name');       // For MySQL 8.0 use string('name', 125);
             $table->string('group_name'); // For MySQL 8.0 use string('guard_name', 125);
             $table->string('guard_name'); // For MySQL 8.0 use string('guard_name', 125);
@@ -35,7 +35,7 @@ return new class extends Migration
         });
 
         Schema::create($tableNames['roles'], function (Blueprint $table) use ($teams, $columnNames) {
-            $table->bigIncrements('id'); // role id
+            $table->uuid('id')->primary(); // role id
             if ($teams || config('permission.testing')) { // permission.testing is a fix for sqlite testing
                 $table->unsignedBigInteger($columnNames['team_foreign_key'])->nullable();
                 $table->index($columnNames['team_foreign_key'], 'roles_team_foreign_key_index');
@@ -51,7 +51,7 @@ return new class extends Migration
         });
 
         Schema::create($tableNames['model_has_permissions'], function (Blueprint $table) use ($tableNames, $columnNames, $pivotPermission, $teams) {
-            $table->unsignedBigInteger($pivotPermission);
+            $table->uuid($pivotPermission);
 
             $table->string('model_type');
             $table->foreignUuid($columnNames['model_morph_key']);
@@ -63,7 +63,7 @@ return new class extends Migration
                 ->onDelete('cascade');
 
             if ($teams) {
-                $table->unsignedBigInteger($columnNames['team_foreign_key']);
+                $table->uuid($columnNames['team_foreign_key']);
                 $table->index($columnNames['team_foreign_key'], 'model_has_permissions_team_foreign_key_index');
 
                 $table->primary(
@@ -79,7 +79,7 @@ return new class extends Migration
         });
 
         Schema::create($tableNames['model_has_roles'], function (Blueprint $table) use ($tableNames, $columnNames, $pivotRole, $teams) {
-            $table->unsignedBigInteger($pivotRole);
+            $table->uuid($pivotRole);
 
             $table->string('model_type');
             $table->foreignUuid($columnNames['model_morph_key']);
@@ -90,7 +90,7 @@ return new class extends Migration
                 ->on($tableNames['roles'])
                 ->onDelete('cascade');
             if ($teams) {
-                $table->unsignedBigInteger($columnNames['team_foreign_key']);
+                $table->uuid($columnNames['team_foreign_key']);
                 $table->index($columnNames['team_foreign_key'], 'model_has_roles_team_foreign_key_index');
 
                 $table->primary(
@@ -106,8 +106,8 @@ return new class extends Migration
         });
 
         Schema::create($tableNames['role_has_permissions'], function (Blueprint $table) use ($tableNames, $pivotRole, $pivotPermission) {
-            $table->unsignedBigInteger($pivotPermission);
-            $table->unsignedBigInteger($pivotRole);
+            $table->foreignUuid($pivotPermission);
+            $table->foreignUuid($pivotRole);
 
             $table->foreign($pivotPermission)
                 ->references('id') // permission id
@@ -123,20 +123,20 @@ return new class extends Migration
         });
 
         Schema::create($tableNames['user_has_permissions'], function (Blueprint $table) use ($tableNames, $pivotRole, $pivotPermission) {
-            $table->unsignedBigInteger($pivotPermission);
-            $table->foreignUuid('user_id'); // Define 'user_id' only once
+            $table->foreignUuid($pivotPermission);
+            $table->foreignUuid('user_uuid'); // Define 'user_id' only once
 
             $table->foreign($pivotPermission)
                 ->references('id')
                 ->on($tableNames['permissions'])
                 ->onDelete('cascade');
 
-            $table->foreign('user_id') // Reference the same 'user_id' column
-                ->references('id')
+            $table->foreign('user_uuid') // Reference the same 'user_id' column
+                ->references('user_uuid')
                 ->on($tableNames['users'])
                 ->onDelete('cascade');
 
-            $table->primary([$pivotPermission, 'user_id'], 'user_has_permissions_permission_id_user_id_primary');
+            $table->primary([$pivotPermission, 'user_uuid'], 'user_has_permissions_permission_id_user_uuid_primary');
         });
 
 

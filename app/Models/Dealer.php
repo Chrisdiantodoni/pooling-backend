@@ -9,9 +9,8 @@ class Dealer extends Model
 {
     use HasFactory;
     protected $guarded = [];
-
-    public function motorcycles()
-    {
-        return $this->belongsToMany(Motorcycle::class, 'dealer_motorcycles', 'dealer_code', 'motorcycle_id');
-    }
+    protected $casts = [
+        'dealer_code' => 'string',
+    ];
+    protected $primaryKey = "dealer_code";
 }

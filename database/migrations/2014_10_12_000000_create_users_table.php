@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+            $table->uuid('user_uuid')->primary();
             $table->string('nip')->nullable();
             $table->string('name');
             $table->string('nik')->nullable();
@@ -21,8 +21,8 @@ return new class extends Migration
             $table->string('birth_address')->nullable();
             $table->date('birth_of_date')->nullable();
             $table->date('date_started_work')->nullable();
-            $table->foreignId('Dealer_code')->nullable();
-            $table->foreignId('area_id')->nullable();
+            $table->foreignUuid('dealer_code')->nullable();
+            $table->foreignUuid('area_uuid')->nullable();
             $table->string('department')->nullable();
             $table->string('phone_number')->nullable();
             $table->string('email')->unique()->nullable();

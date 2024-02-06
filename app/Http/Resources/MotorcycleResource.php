@@ -18,8 +18,16 @@ class MotorcycleResource extends JsonResource
             'type' => $this->type,
             'color' => $this->color,
             'otr' => $this->otr,
-            'user_id' => $this->user_id,
-            'area_id' => $this->area_id,
+            'area' => $this->area,
+            'user' => $this->user,
+            'dealers' => $this->whenLoaded('dealers', function () {
+                return $this->dealers->map(function ($dealer) {
+                    return [
+                        'dealer_code' => $dealer->dealer_code,
+                        'dealer_name' => $dealer->dealer_name,
+                    ];
+                });
+            }),
         ];
     }
 }

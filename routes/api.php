@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\MotorcycleController;
+use App\Http\Controllers\Api\PromotionController;
 use App\Http\Controllers\Api\RejectController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -39,6 +40,14 @@ Route::prefix('v1')->group(function () {
             Route::put('/motorcycle/{id}', 'update');
             Route::delete('/motorcycle/{id}', 'destroy');
             Route::get('/motorcycle/{id}', 'show');
+        });
+
+        Route::controller(PromotionController::class)->group(function () {
+            Route::post('/promotion', 'store');
+            Route::get('/promotion', 'index');
+            Route::put('/promotion/{id}', 'update');
+            Route::delete('/promotion/{id}', 'destroy');
+            Route::get('/promotion/{id}', 'show');
         });
     });
     Route::post('/register', [AuthController::class, 'register']);

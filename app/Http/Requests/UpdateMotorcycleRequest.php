@@ -27,8 +27,8 @@ class UpdateMotorcycleRequest extends FormRequest
             'type' => 'required',
             'color' => 'required',
             'otr' => 'required',
-            'user_id' => 'required',
-            'area_id' => 'required',
+            'user_uuid' => 'required',
+            'area_uuids' => 'required|array',
         ];
     }
 
